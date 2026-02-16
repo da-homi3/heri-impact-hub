@@ -2,6 +2,7 @@ import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
 import DonateSection from "@/components/DonateSection";
 import SupportSection from "@/components/SupportSection";
+import LiveChatWidget from "@/components/LiveChatWidget";
 
 import ActionSection from "@/components/ActionSection";
 import TeamSection from "@/components/TeamSection";
@@ -25,6 +26,7 @@ const Index = () => {
         <SupportSection />
       </main>
       <Footer />
+      <LiveChatWidget />
     </div>
   );
 };

@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      escalated_concerns: {
+        Row: {
+          chat_history: Json
+          concern: string
+          created_at: string
+          id: string
+          name: string | null
+          phone: string | null
+          resolved_at: string | null
+          status: string
+        }
+        Insert: {
+          chat_history?: Json
+          concern: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          phone?: string | null
+          resolved_at?: string | null
+          status?: string
+        }
+        Update: {
+          chat_history?: Json
+          concern?: string
+          created_at?: string
+          id?: string
+          name?: string | null
+          phone?: string | null
+          resolved_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
