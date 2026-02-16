@@ -70,7 +70,7 @@ const DonateSection = () => {
       onClick: () =>
         toast({
           title: "M-Pesa Donation",
-          description: "Paybill: 247247 | Till: 5678901. Send any amount and you'll receive an SMS receipt.",
+          description: "Send to Pochi la Biashara: 0704498457. Send any amount and you'll receive an SMS receipt.",
         }),
     },
     {
