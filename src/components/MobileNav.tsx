@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Home, Heart, Users, Lightbulb, Menu, X } from "lucide-react";
+import { Home, Heart, Users, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { icon: Home, label: "Home", href: "#" },
   { icon: Heart, label: "Donate", href: "#donate" },
   { icon: Users, label: "Team", href: "#team" },
-  { icon: Lightbulb, label: "Projects", href: "#projects" },
+  { icon: MessageCircle, label: "Support", href: "#support" },
 ];
 
 const MobileNav = () => {
