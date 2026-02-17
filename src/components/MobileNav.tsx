@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { Home, Heart, Users, MessageCircle, Menu, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Home, Heart, HandHeart, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const navItems = [
-  { icon: Home, label: "Home", href: "#" },
-  { icon: Heart, label: "Donate", href: "#donate" },
-  { icon: Users, label: "Team", href: "#team" },
-  { icon: MessageCircle, label: "Support", href: "#support" },
-];
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const navItems = [
+    { icon: Home, label: "Home", href: "#", onClick: () => {} },
+    { icon: Heart, label: "Donate", href: "#donate", onClick: () => {} },
+    { icon: HandHeart, label: "Volunteer", href: "/volunteer", onClick: () => navigate("/volunteer") },
+    { icon: MessageCircle, label: "Support", href: "#support", onClick: () => {} },
+  ];
 
   return (
     <>
@@ -44,7 +46,10 @@ const MobileNav = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(e) => {
+                      setOpen(false);
+                      if (item.onClick) { e.preventDefault(); item.onClick(); }
+                    }}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-foreground hover:bg-secondary transition-colors"
                   >
                     <item.icon className="w-5 h-5 text-primary" />
@@ -64,6 +69,7 @@ const MobileNav = () => {
             <a
               key={item.label}
               href={item.href}
+              onClick={(e) => { if (item.onClick) { e.preventDefault(); item.onClick(); } }}
               className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-primary transition-colors py-1 px-3"
             >
               <item.icon className="w-5 h-5" />
