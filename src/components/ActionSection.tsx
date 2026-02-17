@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { HandHeart, HelpCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const ActionSection = () => {
+  const navigate = useNavigate();
   return (
     <section id="help" className="py-16 px-4 bg-background">
       <div className="container max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -18,7 +20,7 @@ const ActionSection = () => {
           <p className="text-primary-foreground/80 text-sm mb-6">
             Join our network of change-makers. Sort donations, deliver supplies, or mentor in your community.
           </p>
-          <Button variant="outline" className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
+          <Button variant="outline" className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" onClick={() => navigate("/volunteer")}>
             Join Us
           </Button>
         </motion.div>
