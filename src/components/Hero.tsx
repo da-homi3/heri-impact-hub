@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { Heart, ArrowDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import heroCommunity from "@/assets/hero-community.jpg";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
       {/* Background image with overlay */}
@@ -42,14 +45,12 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button variant="hero" size="lg" asChild>
-              <a href="#donate">
-                <Heart className="w-5 h-5" />
-                Donate Now
-              </a>
+            <Button variant="hero" size="lg" onClick={() => navigate("/donate")}>
+              <Heart className="w-5 h-5" />
+              Donate Now
             </Button>
-            <Button variant="outline" size="lg" className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" asChild>
-              <a href="#help">Request Help</a>
+            <Button variant="outline" size="lg" className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" onClick={() => navigate("/support")}>
+              Request Help
             </Button>
           </div>
         </motion.div>
@@ -60,8 +61,8 @@ const Hero = () => {
           transition={{ delay: 1.2, duration: 0.8 }}
           className="mt-12"
         >
-          <a href="#impact" className="inline-flex flex-col items-center text-primary-foreground/60 hover:text-primary-foreground/80 transition-colors" aria-label="Scroll to impact section">
-            <span className="text-xs mb-1">See Our Impact</span>
+          <a href="#team" className="inline-flex flex-col items-center text-primary-foreground/60 hover:text-primary-foreground/80 transition-colors" aria-label="Scroll to team section">
+            <span className="text-xs mb-1">Meet Our Team</span>
             <ArrowDown className="w-5 h-5 animate-float" />
           </a>
         </motion.div>

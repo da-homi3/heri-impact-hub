@@ -1,28 +1,35 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Home, Heart, HandHeart, MessageCircle, Menu, X } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Home, Heart, ShoppingBag, HandHeart, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
-    { icon: Home, label: "Home", href: "#", onClick: () => {} },
-    { icon: Heart, label: "Donate", href: "#donate", onClick: () => {} },
-    { icon: HandHeart, label: "Volunteer", href: "/volunteer", onClick: () => navigate("/volunteer") },
-    { icon: MessageCircle, label: "Support", href: "#support", onClick: () => {} },
+    { icon: Home, label: "Home", path: "/" },
+    { icon: Heart, label: "Donate", path: "/donate" },
+    { icon: ShoppingBag, label: "Shop", path: "/shop" },
+    { icon: HandHeart, label: "Volunteer", path: "/volunteer" },
+    { icon: MessageCircle, label: "Support", path: "/support" },
   ];
+
+  const handleNav = (path: string) => {
+    navigate(path);
+    setOpen(false);
+  };
 
   return (
     <>
       {/* Top bar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b border-border/50 shadow-sm">
         <div className="container flex items-center justify-between h-14 px-4">
-          <a href="#" className="flex items-center gap-2">
+          <button onClick={() => navigate("/")} className="flex items-center gap-2">
             <Heart className="w-6 h-6 text-primary" fill="currentColor" />
             <span className="font-bold text-foreground text-lg">Herizon</span>
-          </a>
+          </button>
           <button
             onClick={() => setOpen(!open)}
             className="p-2 text-foreground hover:text-primary transition-colors"
@@ -43,18 +50,18 @@ const MobileNav = () => {
             >
               <div className="px-4 py-3 space-y-1">
                 {navItems.map((item) => (
-                  <a
+                  <button
                     key={item.label}
-                    href={item.href}
-                    onClick={(e) => {
-                      setOpen(false);
-                      if (item.onClick) { e.preventDefault(); item.onClick(); }
-                    }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-foreground hover:bg-secondary transition-colors"
+                    onClick={() => handleNav(item.path)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+                      location.pathname === item.path
+                        ? "bg-secondary text-primary font-bold"
+                        : "text-foreground hover:bg-secondary"
+                    }`}
                   >
                     <item.icon className="w-5 h-5 text-primary" />
                     <span className="font-semibold">{item.label}</span>
-                  </a>
+                  </button>
                 ))}
               </div>
             </motion.nav>
@@ -64,18 +71,22 @@ const MobileNav = () => {
 
       {/* Bottom tab bar for mobile */}
       <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t border-border/50 sm:hidden safe-bottom" aria-label="Main navigation">
-        <div className="flex justify-around items-center h-16 px-2">
-          {navItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              onClick={(e) => { if (item.onClick) { e.preventDefault(); item.onClick(); } }}
-              className="flex flex-col items-center gap-0.5 text-muted-foreground hover:text-primary transition-colors py-1 px-3"
-            >
-              <item.icon className="w-5 h-5" />
-              <span className="text-[10px] font-semibold">{item.label}</span>
-            </a>
-          ))}
+        <div className="flex justify-around items-center h-16 px-1">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <button
+                key={item.label}
+                onClick={() => handleNav(item.path)}
+                className={`flex flex-col items-center gap-0.5 py-1 px-2 transition-colors ${
+                  isActive ? "text-primary" : "text-muted-foreground hover:text-primary"
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                <span className={`text-[10px] ${isActive ? "font-bold" : "font-semibold"}`}>{item.label}</span>
+              </button>
+            );
+          })}
         </div>
       </nav>
     </>
