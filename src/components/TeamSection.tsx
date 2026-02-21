@@ -12,6 +12,11 @@ const team = [
     role: "CFO",
     bio: "Ensuring every shilling is accounted for with full transparency and impact.",
   },
+  {
+    name: "Emmanuel Kyallo",
+    role: "Director of Transportation",
+    bio: "Coordinating logistics to ensure donations and resources reach every community.",
+  },
 ];
 
 const TeamSection = () => {
@@ -30,7 +35,7 @@ const TeamSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
           {team.map((member, i) => (
             <motion.div
               key={member.name}
