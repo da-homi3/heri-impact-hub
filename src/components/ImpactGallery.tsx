@@ -1,50 +1,145 @@
 import { motion } from "framer-motion";
-import { Camera, Heart, MapPin, Calendar } from "lucide-react";
+import { Camera, Heart, MessageCircle, Send, Bookmark, MapPin, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
 const galleryPosts = [
   {
-    title: "School supplies delivered to Kibera",
+    username: "herizon_volunteers",
     location: "Kibera, Nairobi",
-    date: "Feb 2026",
-    description: "Our volunteers distributed notebooks, pens and bags to 120 children.",
-    icon: Heart,
+    caption: "School supplies delivered to 120 children today! 📚✏️ Every notebook is a step toward a brighter future. #HerizonImpact",
+    likes: 284,
+    comments: 32,
+    timeAgo: "2d",
   },
   {
-    title: "Clothing drive in Mombasa",
+    username: "herizon_volunteers",
     location: "Mombasa, Kenya",
-    date: "Jan 2026",
-    description: "Over 500 clothing items sorted and handed out to families in need.",
-    icon: Heart,
+    caption: "Over 500 clothing items sorted and handed out to families in need 👕❤️ Your donations made this possible!",
+    likes: 412,
+    comments: 56,
+    timeAgo: "5d",
   },
   {
-    title: "Community food bank restock",
+    username: "herizon_volunteers",
     location: "Kisumu, Kenya",
-    date: "Dec 2025",
-    description: "Volunteers packed and delivered food parcels to 80 households.",
-    icon: Heart,
+    caption: "Community food bank restocked! 80 households received food parcels today 🍞🥬 Together we fight hunger.",
+    likes: 367,
+    comments: 41,
+    timeAgo: "1w",
   },
   {
-    title: "Toy drive for children's home",
+    username: "herizon_volunteers",
     location: "Nakuru, Kenya",
-    date: "Nov 2025",
-    description: "Brought joy to 60 children with donated toys and games.",
-    icon: Heart,
+    caption: "Brought smiles to 60 children at the children's home with donated toys and games 🧸🎮 Pure joy!",
+    likes: 523,
+    comments: 67,
+    timeAgo: "2w",
   },
   {
-    title: "Winter blankets distribution",
+    username: "herizon_volunteers",
     location: "Nyeri, Kenya",
-    date: "Oct 2025",
-    description: "Warm blankets delivered to elderly community members before the cold season.",
-    icon: Heart,
+    caption: "Warm blankets delivered to elderly community members before the cold season 🧣💛 Warmth is love.",
+    likes: 198,
+    comments: 24,
+    timeAgo: "3w",
   },
   {
-    title: "Book drive at local schools",
+    username: "herizon_volunteers",
     location: "Thika, Kenya",
-    date: "Sep 2025",
-    description: "Donated 300+ books to three primary schools to support learning.",
-    icon: Heart,
+    caption: "300+ books donated to three primary schools! 📖 Knowledge is the greatest gift. #EducationForAll",
+    likes: 445,
+    comments: 53,
+    timeAgo: "1mo",
   },
 ];
+
+const PostCard = ({ post, index }: { post: typeof galleryPosts[0]; index: number }) => {
+  const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.08 }}
+      className="bg-card border border-border/50 rounded-xl overflow-hidden max-w-[468px] mx-auto w-full"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 py-2.5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+            <span className="text-primary-foreground text-xs font-bold">H</span>
+          </div>
+          <div>
+            <p className="text-foreground text-xs font-semibold leading-tight">{post.username}</p>
+            <p className="text-muted-foreground text-[10px] flex items-center gap-0.5">
+              <MapPin className="w-2.5 h-2.5" />
+              {post.location}
+            </p>
+          </div>
+        </div>
+        <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+      </div>
+
+      {/* Image placeholder */}
+      <div className="aspect-square bg-muted/50 flex items-center justify-center relative">
+        <div className="text-center">
+          <Camera className="w-12 h-12 text-muted-foreground/30 mx-auto mb-1" />
+          <p className="text-[10px] text-muted-foreground/40">Volunteer photo coming soon</p>
+        </div>
+        <div className="absolute top-3 right-3 bg-primary/90 text-primary-foreground text-[9px] font-bold px-2 py-0.5 rounded-full">
+          Verified
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="px-3 pt-2.5">
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setLiked(!liked)} className="hover-scale">
+              <Heart
+                className={`w-5 h-5 transition-colors ${liked ? "fill-primary text-primary" : "text-foreground"}`}
+              />
+            </button>
+            <MessageCircle className="w-5 h-5 text-foreground" />
+            <Send className="w-5 h-5 text-foreground" />
+          </div>
+          <button onClick={() => setSaved(!saved)} className="hover-scale">
+            <Bookmark
+              className={`w-5 h-5 transition-colors ${saved ? "fill-foreground text-foreground" : "text-foreground"}`}
+            />
+          </button>
+        </div>
+
+        {/* Likes */}
+        <p className="text-foreground text-xs font-semibold mb-1">
+          {(liked ? post.likes + 1 : post.likes).toLocaleString()} likes
+        </p>
+
+        {/* Caption */}
+        <p className="text-xs text-foreground mb-1">
+          <span className="font-semibold">{post.username}</span>{" "}
+          <span className="text-muted-foreground">{post.caption}</span>
+        </p>
+
+        {/* Comments & time */}
+        <p className="text-[10px] text-muted-foreground mb-1">
+          View all {post.comments} comments
+        </p>
+        <p className="text-[9px] text-muted-foreground/70 uppercase pb-2.5 border-b border-border/30 mb-0">
+          {post.timeAgo} ago
+        </p>
+      </div>
+
+      {/* Comment input */}
+      <div className="px-3 py-2 flex items-center gap-2">
+        <span className="text-sm">😊</span>
+        <p className="text-xs text-muted-foreground flex-1">Add a comment...</p>
+      </div>
+    </motion.div>
+  );
+};
 
 const ImpactGallery = () => {
   return (
@@ -64,51 +159,13 @@ const ImpactGallery = () => {
             How your donation is used
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto">
-            Real stories and updates from our volunteers on the ground — see the difference you make.
+            Real stories from our volunteers — see the difference you make, one post at a time.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {galleryPosts.map((post, i) => (
-            <motion.div
-              key={post.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              className="bg-card rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-md transition-shadow"
-            >
-              {/* Photo placeholder area */}
-              <div className="aspect-[4/3] bg-muted/60 flex items-center justify-center relative overflow-hidden">
-                <div className="text-center p-4">
-                  <Camera className="w-10 h-10 text-muted-foreground/40 mx-auto mb-2" />
-                  <p className="text-xs text-muted-foreground/50">Volunteer photo coming soon</p>
-                </div>
-                <div className="absolute top-3 right-3 bg-primary/90 text-primary-foreground text-[10px] font-bold px-2 py-0.5 rounded-full">
-                  Verified
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-4">
-                <h3 className="font-semibold text-foreground text-sm mb-1.5 line-clamp-1">
-                  {post.title}
-                </h3>
-                <p className="text-muted-foreground text-xs mb-3 line-clamp-2">
-                  {post.description}
-                </p>
-                <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                  <span className="inline-flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {post.location}
-                  </span>
-                  <span className="inline-flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {post.date}
-                  </span>
-                </div>
-              </div>
-            </motion.div>
+            <PostCard key={post.location + i} post={post} index={i} />
           ))}
         </div>
 
@@ -118,7 +175,7 @@ const ImpactGallery = () => {
           viewport={{ once: true }}
           className="text-center text-xs text-muted-foreground mt-8"
         >
-          Updates are posted by verified Herizon volunteers after every mission.
+          Updates posted by verified Herizon volunteers after every mission.
         </motion.p>
       </div>
     </section>
