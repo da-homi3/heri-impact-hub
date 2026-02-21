@@ -1,6 +1,7 @@
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
+import ImpactGallery from "@/components/ImpactGallery";
 import TeamSection from "@/components/TeamSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import Footer from "@/components/Footer";
@@ -13,6 +14,9 @@ const Index = () => {
         <Hero />
         <div id="about">
           <AboutSection />
+        </div>
+        <div id="impact">
+          <ImpactGallery />
         </div>
         <div id="team">
           <TeamSection />
