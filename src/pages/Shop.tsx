@@ -118,41 +118,18 @@ const Shop = () => {
       </header>
 
       <main className="container max-w-lg mx-auto px-4 py-8 pb-24">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mb-8 text-center">
-          <p className="text-muted-foreground text-sm leading-relaxed">
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+          <p className="text-muted-foreground text-sm leading-relaxed mb-8">
             Wear your support proudly. All proceeds go towards funding Herizon's community programmes.
           </p>
+          <div className="bg-muted rounded-2xl p-10 border border-border/50">
+            <ShoppingBag className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+            <h2 className="text-2xl font-bold font-display text-foreground mb-2">Coming soon!</h2>
+            <p className="text-muted-foreground text-sm max-w-sm mx-auto">
+              We're preparing our official Herizon merchandise collection. Stay tuned for T-shirts, hoodies, caps, and more — all in support of our mission.
+            </p>
+          </div>
         </motion.div>
-
-        <div className="space-y-4">
-          {MERCH_ITEMS.map((item, i) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-            >
-              <Card className="border-border/60 hover:shadow-md transition-shadow rounded-2xl overflow-hidden">
-                <CardContent className="p-4 flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-xl bg-secondary flex items-center justify-center text-3xl shrink-0">
-                    {item.emoji}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-foreground font-display text-base">{item.name}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2">{item.description}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <Tag className="w-3.5 h-3.5 text-primary" />
-                      <span className="font-bold text-primary text-sm">KSh {item.price.toLocaleString()}</span>
-                    </div>
-                  </div>
-                  <Button size="sm" onClick={() => { setSelectedItem(item); setSelectedSize(""); setQuantity(1); }}>
-                    Buy
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
       </main>
 
       {/* Order dialog */}
