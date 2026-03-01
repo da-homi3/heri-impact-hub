@@ -12,7 +12,7 @@ const MobileNav = () => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Heart, label: "Donate", path: "/donate" },
     { icon: ShoppingBag, label: "Shop", path: "/shop" },
-    { icon: HandHeart, label: "Volunteer", path: "/volunteer" },
+    { icon: Users, label: "Community", path: "/community" },
     { icon: MessageCircle, label: "Support", path: "/support" },
   ];
 
