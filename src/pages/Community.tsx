@@ -208,11 +208,11 @@ const Community = () => {
 
   const handleLike = async (postId: string) => {
     if (likedPosts.has(postId)) {
-      await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
+      await (supabase as any).from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
       setLikedPosts((prev) => { const n = new Set(prev); n.delete(postId); return n; });
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
-      await supabase.from("post_likes").insert({ post_id: postId, user_id: user.id });
+      await (supabase as any).from("post_likes").insert({ post_id: postId, user_id: user.id });
       setLikedPosts((prev) => new Set(prev).add(postId));
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
     }
