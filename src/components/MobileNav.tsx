@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Heart, ShoppingBag, HandHeart, MessageCircle, Menu, X } from "lucide-react";
+import { Home, Heart, ShoppingBag, Users, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MobileNav = () => {
@@ -12,7 +12,7 @@ const MobileNav = () => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Heart, label: "Donate", path: "/donate" },
     { icon: ShoppingBag, label: "Shop", path: "/shop" },
-    { icon: HandHeart, label: "Volunteer", path: "/volunteer" },
+    { icon: Users, label: "Community", path: "/community" },
     { icon: MessageCircle, label: "Support", path: "/support" },
   ];
 
