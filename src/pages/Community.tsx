@@ -221,7 +221,7 @@ const Community = () => {
   const handleSubmitSuggestion = async () => {
     if (!newSuggestion.trim()) return;
     setSubmitting(true);
-    const { error } = await supabase.from("community_suggestions").insert({
+    const { error } = await (supabase as any).from("community_suggestions").insert({
       user_id: user.id,
       volunteer_name: volunteerName || "Anonymous",
       suggestion: newSuggestion.trim(),
