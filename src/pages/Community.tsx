@@ -187,7 +187,7 @@ const Community = () => {
       }
     }
 
-    const { error } = await supabase.from("community_posts").insert({
+    const { error } = await (supabase as any).from("community_posts").insert({
       user_id: user.id,
       content: newPost.trim() || "📸 Mission photo",
       image_url: imageUrl,
