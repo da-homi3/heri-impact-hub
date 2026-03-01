@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, Heart, ShoppingBag, HandHeart, MessageCircle, Menu, X } from "lucide-react";
+import { Home, Heart, ShoppingBag, Users, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const MobileNav = () => {
