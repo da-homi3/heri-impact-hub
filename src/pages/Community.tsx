@@ -78,7 +78,7 @@ const Community = () => {
 
   const loadData = async (userId: string) => {
     // Load posts
-    const { data: postsData } = await supabase
+    const { data: postsData } = await (supabase as any)
       .from("community_posts")
       .select("*")
       .order("created_at", { ascending: false })
@@ -86,7 +86,7 @@ const Community = () => {
     setPosts((postsData as Post[]) || []);
 
     // Load suggestions
-    const { data: suggestionsData } = await supabase
+    const { data: suggestionsData } = await (supabase as any)
       .from("community_suggestions")
       .select("*")
       .order("created_at", { ascending: false })
@@ -94,35 +94,35 @@ const Community = () => {
     setSuggestions((suggestionsData as Suggestion[]) || []);
 
     // Load user's likes
-    const { data: likesData } = await supabase
+    const { data: likesData } = await (supabase as any)
       .from("post_likes")
       .select("post_id")
       .eq("user_id", userId);
     if (likesData) setLikedPosts(new Set(likesData.map((l: any) => l.post_id)));
 
     // Load team info
-    const { data: memberData } = await supabase
+    const { data: memberData } = await (supabase as any)
       .from("team_members")
       .select("team_id")
       .eq("user_id", userId)
       .maybeSingle();
 
     if (memberData?.team_id) {
-      const { data: team } = await supabase
+      const { data: team } = await (supabase as any)
         .from("volunteer_teams")
         .select("name")
         .eq("id", memberData.team_id)
         .single();
       if (team) setTeamName(team.name);
 
-      const { data: members } = await supabase
+      const { data: members } = await (supabase as any)
         .from("team_members")
         .select("volunteer_id")
         .eq("team_id", memberData.team_id);
 
       if (members && members.length > 0) {
         const volunteerIds = members.map((m: any) => m.volunteer_id);
-        const { data: volunteers } = await supabase
+        const { data: volunteers } = await (supabase as any)
           .from("volunteers")
           .select("id, full_name, location, skills")
           .in("id", volunteerIds);
@@ -131,7 +131,7 @@ const Community = () => {
     }
 
     // Get volunteer name
-    const { data: vol } = await supabase
+    const { data: vol } = await (supabase as any)
       .from("volunteers")
       .select("full_name")
       .eq("user_id", userId)
