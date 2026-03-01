@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Donate from "./pages/Donate";
 import Shop from "./pages/Shop";
 import Volunteer from "./pages/Volunteer";
+import VolunteerLogin from "./pages/VolunteerLogin";
+import Community from "./pages/Community";
 import Support from "./pages/Support";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
