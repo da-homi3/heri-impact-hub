@@ -69,11 +69,7 @@ const DonateSection = () => {
       action: "Send via M-Pesa",
       color: "text-warm-gold",
       bg: "bg-warm-gold/10",
-      onClick: () =>
-        toast({
-          title: "M-Pesa Donation",
-          description: "Send to Pochi la Biashara: 0704498457. Send any amount and you'll receive an SMS receipt.",
-        }),
+      onClick: () => setMpesaOpen(true),
     },
     {
       icon: Calendar,
