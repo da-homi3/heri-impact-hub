@@ -27,7 +27,6 @@ const DonateSection = () => {
   const [formOpen, setFormOpen] = useState(false);
   const [mpesaOpen, setMpesaOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
