@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
+import MpesaDonationFlow from "@/components/MpesaDonationFlow";
 
 const conditionOptions = ["New", "Gently Used", "Used – Still Good", "Slightly Torn", "Torn"];
 
@@ -24,6 +25,7 @@ const item = {
 
 const DonateSection = () => {
   const [formOpen, setFormOpen] = useState(false);
+  const [mpesaOpen, setMpesaOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [name, setName] = useState("");
@@ -67,11 +69,7 @@ const DonateSection = () => {
       action: "Send via M-Pesa",
       color: "text-warm-gold",
       bg: "bg-warm-gold/10",
-      onClick: () =>
-        toast({
-          title: "M-Pesa Donation",
-          description: "Send to Pochi la Biashara: 0704498457. Send any amount and you'll receive an SMS receipt.",
-        }),
+      onClick: () => setMpesaOpen(true),
     },
     {
       icon: Calendar,
@@ -236,6 +234,9 @@ const DonateSection = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* M-Pesa Full-Screen Flow */}
+      <MpesaDonationFlow open={mpesaOpen} onClose={() => setMpesaOpen(false)} />
     </section>
   );
 };
