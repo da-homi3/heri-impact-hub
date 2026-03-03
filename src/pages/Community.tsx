@@ -302,106 +302,24 @@ const Community = () => {
             </TabsTrigger>
           </TabsList>
 
-          {/* FEED TAB */}
           <TabsContent value="feed" className="space-y-5">
-            {/* New post composer */}
-            <div className="bg-card border border-border/50 rounded-xl p-4 space-y-3">
-              <Textarea
-                value={newPost}
-                onChange={(e) => setNewPost(e.target.value)}
-                placeholder="Share an update from your mission…"
-                className="min-h-[60px] text-sm resize-none"
-                maxLength={500}
-              />
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
-                  <Input
-                    value={postLocation}
-                    onChange={(e) => setPostLocation(e.target.value)}
-                    placeholder="Location"
-                    className="pl-8 h-8 text-xs w-36"
-                    maxLength={50}
-                  />
-                </div>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gradient-to-br from-secondary via-card to-secondary/50 border border-border/50 rounded-2xl p-10 text-center"
+            >
+              <div className="text-5xl mb-4">🍬😊✨</div>
+              <h3 className="text-2xl font-bold font-display text-foreground mb-3">
+                Sweets, Smiles & Everything Nice
+              </h3>
+              <p className="text-muted-foreground text-sm max-w-xs mx-auto mb-4">
+                Our volunteer feed is coming soon! Get ready to share mission photos, updates and celebrate the amazing work our community does.
+              </p>
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-4 py-2 rounded-full">
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                Coming soon
               </div>
-
-              {imagePreview && (
-                <div className="relative">
-                  <img src={imagePreview} alt="Upload preview" className="rounded-lg max-h-48 object-cover w-full" />
-                  <button
-                    onClick={() => { setImageFile(null); setImagePreview(null); }}
-                    className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-1"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-1.5 text-xs text-primary font-semibold cursor-pointer hover:underline">
-                  <Image className="w-4 h-4" />
-                  Add photo
-                  <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-                </label>
-                <Button size="sm" onClick={handleCreatePost} disabled={submitting || (!newPost.trim() && !imageFile)}>
-                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <><Send className="w-3.5 h-3.5 mr-1" /> Post</>}
-                </Button>
-              </div>
-            </div>
-
-            {/* Posts feed */}
-            <AnimatePresence>
-              {posts.map((post) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-card border border-border/50 rounded-xl overflow-hidden"
-                >
-                  {/* Post header */}
-                  <div className="flex items-center gap-2.5 px-4 py-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                      <span className="text-primary-foreground text-xs font-bold">H</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-foreground text-xs font-semibold">Herizon volunteer</p>
-                      {post.location && (
-                        <p className="text-muted-foreground text-[10px] flex items-center gap-0.5">
-                          <MapPin className="w-2.5 h-2.5" /> {post.location}
-                        </p>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-muted-foreground">{timeAgo(post.created_at)}</span>
-                  </div>
-
-                  {/* Image */}
-                  {post.image_url && (
-                    <img src={post.image_url} alt="Mission photo" className="w-full aspect-square object-cover" />
-                  )}
-
-                  {/* Content */}
-                  <div className="px-4 py-3 space-y-2">
-                    <p className="text-sm text-foreground">{post.content}</p>
-                    <div className="flex items-center gap-3">
-                      <button onClick={() => handleLike(post.id)} className="flex items-center gap-1 text-xs">
-                        <ThumbsUp
-                          className={`w-4 h-4 transition-colors ${likedPosts.has(post.id) ? "fill-primary text-primary" : "text-muted-foreground"}`}
-                        />
-                        <span className="text-muted-foreground font-semibold">{post.likes_count}</span>
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-
-            {posts.length === 0 && (
-              <div className="text-center py-12">
-                <Camera className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
-                <p className="text-sm text-muted-foreground">No posts yet. Be the first to share!</p>
-              </div>
-            )}
+            </motion.div>
           </TabsContent>
 
           {/* TEAM TAB */}
