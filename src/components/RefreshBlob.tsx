@@ -135,22 +135,23 @@ const RefreshBlob = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-card border border-border rounded-2xl px-6 py-4 shadow-lg text-center max-w-[240px] relative"
+                className="rounded-2xl px-6 py-4 shadow-lg text-center max-w-[240px] relative border border-border"
+                style={{ backgroundColor: "hsl(40, 40%, 95%)" }}
               >
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-card border-l border-t border-border rotate-45" />
-                <p className="text-foreground font-bold text-sm mb-1 relative z-10">Wait, don't go! 🥺</p>
-                <p className="text-muted-foreground text-xs relative z-10">Are you sure you want to refresh?</p>
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 border-l border-t border-border rotate-45" style={{ backgroundColor: "hsl(40, 40%, 95%)" }} />
+                <p className="font-bold text-sm mb-1 relative z-10" style={{ color: "hsl(25, 30%, 20%)" }}>Wait, don't go! 🥺</p>
+                <p className="text-xs relative z-10" style={{ color: "hsl(25, 20%, 35%)" }}>Are you sure you want to refresh?</p>
 
                 <div className="flex gap-2 mt-4 relative z-10">
                   <button
                     onClick={handleStay}
-                    className="flex-1 bg-primary text-primary-foreground text-xs font-bold py-2.5 rounded-xl hover:opacity-90 transition-opacity"
+                    className="flex-1 text-primary-foreground text-xs font-bold py-2.5 rounded-xl hover:opacity-90 transition-opacity bg-primary"
                   >
                     I'll stay ❤️
                   </button>
                   <button
                     onClick={handleRefresh}
-                    className="flex-1 bg-muted text-muted-foreground text-xs font-semibold py-2.5 rounded-xl hover:bg-muted/80 transition-colors"
+                    className="flex-1 text-xs font-semibold py-2.5 rounded-xl hover:opacity-90 transition-opacity bg-secondary text-secondary-foreground"
                   >
                     Refresh
                   </button>
