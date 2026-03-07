@@ -37,6 +37,10 @@ const RefreshBlob = () => {
 
     const handleTouchEnd = () => {
       if (isPulling.current && pullProgress >= 1) {
+        // Gentle haptic feedback when threshold is reached
+        if (navigator.vibrate) {
+          navigator.vibrate(30);
+        }
         showBlob();
       }
       isPulling.current = false;
