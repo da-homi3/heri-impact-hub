@@ -49,7 +49,7 @@ const Hero = () => {
               <Heart className="w-5 h-5" />
               Donate Now
             </Button>
-            <Button variant="outline" size="lg" className="border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground" onClick={() => navigate("/support")}>
+            <Button variant="outline" size="lg" className="border-primary-foreground/60 text-primary-foreground bg-primary-foreground/15 backdrop-blur-sm hover:bg-primary-foreground/25 hover:text-primary-foreground font-bold" onClick={() => navigate("/support")}>
               Request Help
             </Button>
           </div>
