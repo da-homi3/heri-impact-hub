@@ -33,9 +33,10 @@ const SupportSection = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [successOpen, setSuccessOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone.trim() || !message.trim()) {
       toast({ title: "Please fill in all required fields", variant: "destructive" });
@@ -49,6 +50,21 @@ const SupportSection = () => {
       toast({ title: "Please write a longer message so we can help you better", variant: "destructive" });
       return;
     }
+
+    setSubmitting(true);
+    const { error } = await supabase.from("escalated_concerns").insert({
+      name: name.trim() || null,
+      phone: phone.trim(),
+      concern: message.trim(),
+      chat_history: [],
+    });
+    setSubmitting(false);
+
+    if (error) {
+      toast({ title: "Could not send message. Please try again.", variant: "destructive" });
+      return;
+    }
+
     setSuccessOpen(true);
     setName("");
     setPhone("");
