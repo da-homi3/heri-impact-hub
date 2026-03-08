@@ -13,6 +13,7 @@ import Community from "./pages/Community";
 import Support from "./pages/Support";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import PochiDonation from "./pages/PochiDonation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
