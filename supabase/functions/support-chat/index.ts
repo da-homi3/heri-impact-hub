@@ -35,6 +35,8 @@ Important rules:
 5. Use simple Kenyan-friendly English. You may sprinkle in light Swahili greetings like "Karibu" or "Asante".`;
 
 serve(async (req) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
