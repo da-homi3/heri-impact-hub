@@ -237,7 +237,6 @@ const DonateSection = () => {
       </Dialog>
 
     </section>
-    </section>
   );
 };
 
