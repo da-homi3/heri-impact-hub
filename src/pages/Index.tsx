@@ -1,7 +1,7 @@
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
-import ImpactGallery from "@/components/ImpactGallery";
+
 import TeamSection from "@/components/TeamSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import Footer from "@/components/Footer";
@@ -16,13 +16,10 @@ const Index = () => {
           <AboutSection />
         </div>
         <div id="impact">
-          <ImpactGallery />
+          <ProjectsSection />
         </div>
         <div id="team">
           <TeamSection />
-        </div>
-        <div id="projects">
-          <ProjectsSection />
         </div>
       </main>
       <Footer />
