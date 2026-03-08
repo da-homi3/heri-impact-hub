@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle, Clock, Send, CheckCircle, ShieldCheck } from "lucide-react";
+import { MessageCircle, Clock, Send, CheckCircle, ShieldCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const responseInfo = [
   {
@@ -32,9 +33,10 @@ const SupportSection = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [successOpen, setSuccessOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone.trim() || !message.trim()) {
       toast({ title: "Please fill in all required fields", variant: "destructive" });
@@ -48,6 +50,21 @@ const SupportSection = () => {
       toast({ title: "Please write a longer message so we can help you better", variant: "destructive" });
       return;
     }
+
+    setSubmitting(true);
+    const { error } = await supabase.from("escalated_concerns").insert({
+      name: name.trim() || null,
+      phone: phone.trim(),
+      concern: message.trim(),
+      chat_history: [],
+    });
+    setSubmitting(false);
+
+    if (error) {
+      toast({ title: "Could not send message. Please try again.", variant: "destructive" });
+      return;
+    }
+
     setSuccessOpen(true);
     setName("");
     setPhone("");
@@ -146,9 +163,9 @@ const SupportSection = () => {
                   />
                 </div>
 
-                <Button type="submit" className="w-full gap-2">
-                  <Send className="w-4 h-4" />
-                  Send message
+                <Button type="submit" className="w-full gap-2" disabled={submitting}>
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {submitting ? "Sending…" : "Send message"}
                 </Button>
               </form>
             </CardContent>

@@ -182,8 +182,10 @@ const Community = () => {
         .from("community-photos")
         .upload(path, imageFile);
       if (!uploadError) {
-        const { data: urlData } = supabase.storage.from("community-photos").getPublicUrl(path);
-        imageUrl = urlData.publicUrl;
+        const { data: signedData } = await supabase.storage
+          .from("community-photos")
+          .createSignedUrl(path, 3600);
+        imageUrl = signedData?.signedUrl ?? null;
       }
     }
 
