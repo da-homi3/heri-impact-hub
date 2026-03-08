@@ -70,7 +70,7 @@ const DonateSection = () => {
       action: "Send via M-Pesa",
       color: "text-warm-gold",
       bg: "bg-warm-gold/10",
-      onClick: () => setMpesaOpen(true),
+      onClick: () => navigate("/donate/pochi"),
     },
     {
       icon: Calendar,
