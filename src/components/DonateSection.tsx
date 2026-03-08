@@ -236,8 +236,7 @@ const DonateSection = () => {
         </DialogContent>
       </Dialog>
 
-      {/* M-Pesa Full-Screen Flow */}
-      <MpesaDonationFlow open={mpesaOpen} onClose={() => setMpesaOpen(false)} />
+    </section>
     </section>
   );
 };

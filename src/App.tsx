@@ -28,6 +28,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/donate/pochi" element={<PochiDonation />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/volunteer-login" element={<VolunteerLogin />} />
