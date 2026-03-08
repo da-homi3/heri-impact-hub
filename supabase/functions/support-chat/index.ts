@@ -1,11 +1,21 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+const ALLOWED_ORIGINS = [
+  "https://id-preview--a50f78fe-e9a7-4e14-8f9d-039a7709e57d.lovable.app",
+  "https://lovable.dev",
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get("origin") || "";
+  const allowedOrigin = ALLOWED_ORIGINS.find((o) => origin.startsWith(o) || origin === o) 
+    || ALLOWED_ORIGINS[0];
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  };
+}
 
 const SYSTEM_PROMPT = `You are Herizon Support Assistant, a warm, friendly AI helper for Herizon Impact — a humanitarian organisation based in Kenya that helps communities through donations, volunteering, and direct support.
 
