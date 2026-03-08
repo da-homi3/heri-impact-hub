@@ -38,8 +38,15 @@ const AdminDashboard = () => {
   const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
-    checkAuth();
-    fetchVolunteers();
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate("/admin/login"); return; }
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+      const isAdmin = roles?.some((r: { role: string }) => r.role === "admin");
+      if (!isAdmin) { navigate("/admin/login"); return; }
+      await fetchVolunteers();
+    };
+    init();
   }, []);
 
   const checkAuth = async () => {

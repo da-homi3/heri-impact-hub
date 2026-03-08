@@ -163,9 +163,9 @@ const SupportSection = () => {
                   />
                 </div>
 
-                <Button type="submit" className="w-full gap-2">
-                  <Send className="w-4 h-4" />
-                  Send message
+                <Button type="submit" className="w-full gap-2" disabled={submitting}>
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  {submitting ? "Sending…" : "Send message"}
                 </Button>
               </form>
             </CardContent>
