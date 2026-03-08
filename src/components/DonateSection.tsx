@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Package, Smartphone, MapPin, Calendar, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,8 +25,8 @@ const item = {
 };
 
 const DonateSection = () => {
+  const navigate = useNavigate();
   const [formOpen, setFormOpen] = useState(false);
-  const [mpesaOpen, setMpesaOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [name, setName] = useState("");
@@ -69,7 +70,7 @@ const DonateSection = () => {
       action: "Send via M-Pesa",
       color: "text-warm-gold",
       bg: "bg-warm-gold/10",
-      onClick: () => setMpesaOpen(true),
+      onClick: () => navigate("/donate/pochi"),
     },
     {
       icon: Calendar,
@@ -235,8 +236,6 @@ const DonateSection = () => {
         </DialogContent>
       </Dialog>
 
-      {/* M-Pesa Full-Screen Flow */}
-      <MpesaDonationFlow open={mpesaOpen} onClose={() => setMpesaOpen(false)} />
     </section>
   );
 };

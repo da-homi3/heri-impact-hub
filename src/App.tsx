@@ -13,6 +13,7 @@ import Community from "./pages/Community";
 import Support from "./pages/Support";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import PochiDonation from "./pages/PochiDonation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/donate" element={<Donate />} />
+          <Route path="/donate/pochi" element={<PochiDonation />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/volunteer" element={<Volunteer />} />
           <Route path="/volunteer-login" element={<VolunteerLogin />} />
