@@ -79,7 +79,7 @@ const PochiDonation = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 0 && (!phone.trim() || phone.trim().length < 10)) {
       toast({ title: "Please enter a valid phone number", variant: "destructive" });
       return;
