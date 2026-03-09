@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface MerchItem {
   id: string;
@@ -70,7 +71,7 @@ const Shop = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleOrder = (e: React.FormEvent) => {
+  const handleOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim()) {
       toast({ title: "Please fill in your name and phone number", variant: "destructive" });
@@ -90,17 +91,25 @@ const Shop = () => {
     }
 
     setLoading(true);
-    // Simulate submission
-    setTimeout(() => {
-      setLoading(false);
-      setSelectedItem(null);
-      setShowSuccess(true);
-      setName("");
-      setPhone("");
-      setPaymentRef("");
-      setSelectedSize("");
-      setQuantity(1);
-    }, 1000);
+    const { error } = await supabase.from("donations").insert({
+      donor_name: name.trim() || null,
+      phone: phone.trim(),
+      amount: totalPrice,
+      mpesa_code: paymentRef.trim(),
+      source: "shop",
+    });
+    setLoading(false);
+    if (error) {
+      toast({ title: error.message?.includes("Too many") ? "Too many submissions. Please try again later." : "Could not place order. Please try again.", variant: "destructive" });
+      return;
+    }
+    setSelectedItem(null);
+    setShowSuccess(true);
+    setName("");
+    setPhone("");
+    setPaymentRef("");
+    setSelectedSize("");
+    setQuantity(1);
   };
 
   const totalPrice = selectedItem ? selectedItem.price * quantity : 0;

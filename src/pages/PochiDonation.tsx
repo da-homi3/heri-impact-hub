@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const SUGGESTED_AMOUNTS = [100, 250, 500, 1000, 2500, 5000];
 
@@ -78,7 +79,7 @@ const PochiDonation = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 0 && (!phone.trim() || phone.trim().length < 10)) {
       toast({ title: "Please enter a valid phone number", variant: "destructive" });
       return;
@@ -93,10 +94,19 @@ const PochiDonation = () => {
     }
     if (step === 2) {
       setSubmitting(true);
-      setTimeout(() => {
-        setSubmitting(false);
-        setStep(3);
-      }, 1200);
+      const { error } = await supabase.from("donations").insert({
+        donor_name: name.trim() || null,
+        phone: phone.trim(),
+        amount: Number(selectedAmount),
+        mpesa_code: confirmationCode.trim(),
+        source: "pochi",
+      });
+      setSubmitting(false);
+      if (error) {
+        toast({ title: error.message?.includes("Too many") ? "Too many submissions. Please try again later." : "Could not save donation. Please try again.", variant: "destructive" });
+        return;
+      }
+      setStep(3);
       return;
     }
     setStep((s) => s + 1);
