@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      donations: {
+        Row: {
+          amount: number
+          created_at: string
+          donor_name: string | null
+          id: string
+          mpesa_code: string
+          phone: string
+          source: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          donor_name?: string | null
+          id?: string
+          mpesa_code: string
+          phone: string
+          source?: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          donor_name?: string | null
+          id?: string
+          mpesa_code?: string
+          phone?: string
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
       escalated_concerns: {
         Row: {
           chat_history: Json
@@ -149,10 +182,7 @@ export type Database = {
     }
     Functions: {
       has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
+        Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
       }
     }
