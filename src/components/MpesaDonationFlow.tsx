@@ -52,10 +52,19 @@ const MpesaDonationFlow = ({ open, onClose }: MpesaDonationFlowProps) => {
         return;
       }
       setSubmitting(true);
-      setTimeout(() => {
-        setSubmitting(false);
-        setStep(4);
-      }, 1200);
+      const { error } = await supabase.from("donations").insert({
+        donor_name: name.trim() || null,
+        phone: phone.trim(),
+        amount: Number(selectedAmount),
+        mpesa_code: confirmationCode.trim(),
+        source: "mpesa",
+      });
+      setSubmitting(false);
+      if (error) {
+        toast({ title: error.message?.includes("Too many") ? "Too many submissions. Please try again later." : "Could not save donation. Please try again.", variant: "destructive" });
+        return;
+      }
+      setStep(4);
       return;
     }
     setStep((s) => s + 1);
