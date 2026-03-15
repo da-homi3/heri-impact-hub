@@ -142,6 +142,7 @@ export type Database = {
           skills: string[] | null
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           access_code?: string | null
@@ -159,6 +160,7 @@ export type Database = {
           skills?: string[] | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           access_code?: string | null
@@ -176,6 +178,7 @@ export type Database = {
           skills?: string[] | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
