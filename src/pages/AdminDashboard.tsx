@@ -21,6 +21,7 @@ type Volunteer = {
   status: string;
   programme_rules_accepted: boolean;
   created_at: string;
+  access_code: string | null;
 };
 
 const statusColors: Record<string, string> = {
