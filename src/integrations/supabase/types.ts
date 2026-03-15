@@ -127,6 +127,7 @@ export type Database = {
       }
       volunteers: {
         Row: {
+          access_code: string | null
           availability: string
           created_at: string
           email: string | null
@@ -141,8 +142,10 @@ export type Database = {
           skills: string[] | null
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
+          access_code?: string | null
           availability: string
           created_at?: string
           email?: string | null
@@ -157,8 +160,10 @@ export type Database = {
           skills?: string[] | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
+          access_code?: string | null
           availability?: string
           created_at?: string
           email?: string | null
@@ -173,6 +178,7 @@ export type Database = {
           skills?: string[] | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -181,6 +187,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_volunteer_access_code: { Args: never; Returns: string }
       has_role: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean

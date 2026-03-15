@@ -21,6 +21,7 @@ type Volunteer = {
   status: string;
   programme_rules_accepted: boolean;
   created_at: string;
+  access_code: string | null;
 };
 
 const statusColors: Record<string, string> = {
@@ -69,13 +70,35 @@ const AdminDashboard = () => {
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(true);
-    const { error } = await supabase.from("volunteers").update({ status }).eq("id", id);
+
+    let accessCode: string | null = null;
+
+    // Generate access code on approval
+    if (status === "approved") {
+      const { data: codeData, error: codeError } = await supabase.rpc("generate_volunteer_access_code");
+      if (codeError || !codeData) {
+        toast({ title: "Failed to generate access code", variant: "destructive" });
+        setUpdating(false);
+        return;
+      }
+      accessCode = codeData as string;
+    }
+
+    const updatePayload: Record<string, unknown> = { status };
+    if (accessCode) updatePayload.access_code = accessCode;
+    // Clear access code on rejection
+    if (status === "rejected") updatePayload.access_code = null;
+
+    const { error } = await supabase.from("volunteers").update(updatePayload).eq("id", id);
     if (error) {
       toast({ title: "Failed to update", variant: "destructive" });
     } else {
-      toast({ title: `Volunteer ${status}` });
-      setVolunteers((prev) => prev.map((v) => (v.id === id ? { ...v, status } : v)));
-      if (selected?.id === id) setSelected({ ...selected, status });
+      const msg = status === "approved"
+        ? `Volunteer approved! Access code: ${accessCode}`
+        : `Volunteer ${status}`;
+      toast({ title: msg, description: status === "approved" ? "Share this code with the volunteer." : undefined });
+      setVolunteers((prev) => prev.map((v) => (v.id === id ? { ...v, status, access_code: accessCode ?? v.access_code } : v)));
+      if (selected?.id === id) setSelected({ ...selected, status, access_code: accessCode ?? selected.access_code });
     }
     setUpdating(false);
   };
@@ -193,6 +216,17 @@ const AdminDashboard = () => {
                   <strong className="text-foreground">Rules accepted:</strong>{" "}
                   <span className="text-muted-foreground">{selected.programme_rules_accepted ? "Yes" : "No"}</span>
                 </div>
+
+                {selected.access_code && (
+                  <div className="bg-secondary/60 border border-primary/20 rounded-xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground mb-1">Volunteer access code</p>
+                    <p className="text-2xl font-bold font-mono tracking-widest text-primary">{selected.access_code}</p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Share this code with {selected.full_name.split(" ")[0]} via SMS or call.
+                      They use it with their phone number to log into the community.
+                    </p>
+                  </div>
+                )}
 
                 <div>
                   <strong className="text-foreground">Applied:</strong>{" "}
