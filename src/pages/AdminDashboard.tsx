@@ -217,6 +217,17 @@ const AdminDashboard = () => {
                   <span className="text-muted-foreground">{selected.programme_rules_accepted ? "Yes" : "No"}</span>
                 </div>
 
+                {selected.access_code && (
+                  <div className="bg-secondary/60 border border-primary/20 rounded-xl p-4 text-center">
+                    <p className="text-xs text-muted-foreground mb-1">Volunteer access code</p>
+                    <p className="text-2xl font-bold font-mono tracking-widest text-primary">{selected.access_code}</p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Share this code with {selected.full_name.split(" ")[0]} via SMS or call.
+                      They use it with their phone number to log into the community.
+                    </p>
+                  </div>
+                )}
+
                 <div>
                   <strong className="text-foreground">Applied:</strong>{" "}
                   <span className="text-muted-foreground">{new Date(selected.created_at).toLocaleString()}</span>
