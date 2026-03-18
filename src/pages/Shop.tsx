@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ShoppingBag, CheckCircle2, Tag } from "lucide-react";
+import { ArrowLeft, ShoppingBag, CheckCircle2, Tag, Gamepad2 } from "lucide-react";
+import HeriArcadeSection from "@/components/HeriArcadeSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
