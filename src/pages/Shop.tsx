@@ -128,13 +128,16 @@ const Shop = () => {
       </header>
 
       <main className="container max-w-lg mx-auto px-4 py-8 pb-24">
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-          <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-            Wear your support proudly. All proceeds go towards funding Herizon's community programmes.
-          </p>
+        <HeriArcadeSection />
+
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center">
+          <div className="flex items-center gap-2 mb-3 justify-center">
+            <ShoppingBag className="w-5 h-5 text-muted-foreground" />
+            <h2 className="text-lg font-bold font-display text-foreground">Herizon Merch</h2>
+          </div>
           <div className="bg-muted rounded-2xl p-10 border border-border/50">
             <ShoppingBag className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-            <h2 className="text-2xl font-bold font-display text-foreground mb-2">Coming soon!</h2>
+            <h3 className="text-xl font-bold font-display text-foreground mb-2">Coming soon!</h3>
             <p className="text-muted-foreground text-sm max-w-sm mx-auto">
               We're preparing our official Herizon merchandise collection. Stay tuned for T-shirts, hoodies, caps, and more — all in support of our mission.
             </p>
