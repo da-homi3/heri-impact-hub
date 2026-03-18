@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      arcade_sessions: {
+        Row: {
+          amount: number
+          created_at: string
+          entry_code: string | null
+          game_type: string
+          id: string
+          mpesa_code: string
+          phone: string
+          player_name: string
+          status: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          entry_code?: string | null
+          game_type?: string
+          id?: string
+          mpesa_code: string
+          phone: string
+          player_name: string
+          status?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          entry_code?: string | null
+          game_type?: string
+          id?: string
+          mpesa_code?: string
+          phone?: string
+          player_name?: string
+          status?: string
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount: number
@@ -187,6 +223,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_arcade_entry_code: { Args: never; Returns: string }
       generate_volunteer_access_code: { Args: never; Returns: string }
       has_role: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
