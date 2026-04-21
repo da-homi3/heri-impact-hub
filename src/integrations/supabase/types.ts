@@ -116,6 +116,39 @@ export type Database = {
         }
         Relationships: []
       }
+      photo_uploads: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          phone: string | null
+          reviewed_at: string | null
+          status: string
+          storage_path: string
+          uploader_name: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          phone?: string | null
+          reviewed_at?: string | null
+          status?: string
+          storage_path: string
+          uploader_name: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          phone?: string | null
+          reviewed_at?: string | null
+          status?: string
+          storage_path?: string
+          uploader_name?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -140,6 +173,51 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      tickets: {
+        Row: {
+          admin_response: string | null
+          category: string
+          created_at: string
+          email: string | null
+          id: string
+          message: string
+          name: string
+          phone: string
+          resolved_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          message: string
+          name: string
+          phone: string
+          resolved_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          admin_response?: string | null
+          category?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          message?: string
+          name?: string
+          phone?: string
+          resolved_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
         }
         Relationships: []
       }
