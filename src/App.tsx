@@ -12,6 +12,8 @@ import VolunteerLogin from "./pages/VolunteerLogin";
 import Community from "./pages/Community";
 import Support from "./pages/Support";
 import AdminLogin from "./pages/AdminLogin";
+import AdminForgotPassword from "./pages/AdminForgotPassword";
+import AdminResetPassword from "./pages/AdminResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import PochiDonation from "./pages/PochiDonation";
 import NotFound from "./pages/NotFound";
@@ -35,6 +37,8 @@ const App = () => (
           <Route path="/community" element={<Community />} />
           <Route path="/support" element={<Support />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
+          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
           <Route path="/admin" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
