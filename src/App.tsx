@@ -16,6 +16,7 @@ import AdminForgotPassword from "./pages/AdminForgotPassword";
 import AdminResetPassword from "./pages/AdminResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import PochiDonation from "./pages/PochiDonation";
+import ArcadeConsole from "./pages/ArcadeConsole";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
