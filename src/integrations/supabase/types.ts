@@ -16,33 +16,48 @@ export type Database = {
     Tables: {
       arcade_sessions: {
         Row: {
+          activated_at: string | null
           amount: number
+          console_id: string | null
           created_at: string
+          duration_minutes: number
           entry_code: string | null
+          expires_at: string | null
           game_type: string
           id: string
+          last_heartbeat_at: string | null
           mpesa_code: string
           phone: string
           player_name: string
           status: string
         }
         Insert: {
+          activated_at?: string | null
           amount: number
+          console_id?: string | null
           created_at?: string
+          duration_minutes?: number
           entry_code?: string | null
+          expires_at?: string | null
           game_type?: string
           id?: string
+          last_heartbeat_at?: string | null
           mpesa_code: string
           phone: string
           player_name: string
           status?: string
         }
         Update: {
+          activated_at?: string | null
           amount?: number
+          console_id?: string | null
           created_at?: string
+          duration_minutes?: number
           entry_code?: string | null
+          expires_at?: string | null
           game_type?: string
           id?: string
+          last_heartbeat_at?: string | null
           mpesa_code?: string
           phone?: string
           player_name?: string
@@ -345,6 +360,10 @@ export type Database = {
       has_role: {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
+      }
+      redeem_arcade_code: {
+        Args: { _code: string; _console_id?: string }
+        Returns: Json
       }
     }
     Enums: {
