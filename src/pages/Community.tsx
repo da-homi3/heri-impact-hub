@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { User } from "@supabase/supabase-js";
 
 interface Post {
   id: string;
@@ -40,7 +41,7 @@ interface TeamMember {
 const Community = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -74,10 +75,11 @@ const Community = () => {
 
     init();
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, loadData]);
 
-  const loadData = async (userId: string) => {
+  const loadData = useCallback(async (userId: string) => {
     // Load posts
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: postsData } = await (supabase as any)
       .from("community_posts")
       .select("*")
@@ -86,6 +88,7 @@ const Community = () => {
     setPosts((postsData as Post[]) || []);
 
     // Load suggestions
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: suggestionsData } = await (supabase as any)
       .from("community_suggestions")
       .select("*")
@@ -94,13 +97,15 @@ const Community = () => {
     setSuggestions((suggestionsData as Suggestion[]) || []);
 
     // Load user's likes
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: likesData } = await (supabase as any)
       .from("post_likes")
       .select("post_id")
       .eq("user_id", userId);
-    if (likesData) setLikedPosts(new Set(likesData.map((l: any) => l.post_id)));
+    if (likesData) setLikedPosts(new Set(likesData.map((l: { post_id: string }) => l.post_id)));
 
     // Load team info
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: memberData } = await (supabase as any)
       .from("team_members")
       .select("team_id")
@@ -108,6 +113,7 @@ const Community = () => {
       .maybeSingle();
 
     if (memberData?.team_id) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data: team } = await (supabase as any)
         .from("volunteer_teams")
         .select("name")
@@ -115,13 +121,15 @@ const Community = () => {
         .single();
       if (team) setTeamName(team.name);
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data: members } = await (supabase as any)
         .from("team_members")
         .select("volunteer_id")
         .eq("team_id", memberData.team_id);
 
       if (members && members.length > 0) {
-        const volunteerIds = members.map((m: any) => m.volunteer_id);
+        const volunteerIds = members.map((m: { volunteer_id: string }) => m.volunteer_id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { data: volunteers } = await (supabase as any)
           .from("volunteers")
           .select("id, full_name, location, skills")
@@ -131,6 +139,7 @@ const Community = () => {
     }
 
     // Get volunteer name
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data: vol } = await (supabase as any)
       .from("volunteers")
       .select("full_name")
@@ -138,7 +147,7 @@ const Community = () => {
       .maybeSingle();
     if (vol) setVolunteerName(vol.full_name);
     else setVolunteerName(user?.user_metadata?.full_name || "Volunteer");
-  };
+  }, [user?.user_metadata?.full_name]);
 
   // Realtime subscriptions
   useEffect(() => {
@@ -160,7 +169,7 @@ const Community = () => {
       supabase.removeChannel(postsChannel);
       supabase.removeChannel(sugChannel);
     };
-  }, [user]);
+  }, [user, loadData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -189,6 +198,7 @@ const Community = () => {
       }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any).from("community_posts").insert({
       user_id: user.id,
       content: newPost.trim() || "📸 Mission photo",
@@ -210,10 +220,12 @@ const Community = () => {
 
   const handleLike = async (postId: string) => {
     if (likedPosts.has(postId)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (supabase as any).from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
       setLikedPosts((prev) => { const n = new Set(prev); n.delete(postId); return n; });
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (supabase as any).from("post_likes").insert({ post_id: postId, user_id: user.id });
       setLikedPosts((prev) => new Set(prev).add(postId));
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
@@ -223,6 +235,7 @@ const Community = () => {
   const handleSubmitSuggestion = async () => {
     if (!newSuggestion.trim()) return;
     setSubmitting(true);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { error } = await (supabase as any).from("community_suggestions").insert({
       user_id: user.id,
       volunteer_name: volunteerName || "Anonymous",

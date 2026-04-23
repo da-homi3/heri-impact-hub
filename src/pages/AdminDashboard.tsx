@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Users, CheckCircle2, XCircle, Clock, Eye, LayoutDashboard, Heart, Gamepad2, MessageSquare, Image as ImageIcon, Ticket } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -63,16 +63,16 @@ const AdminDashboard = () => {
       await Promise.all([fetchVolunteers(), fetchStats()]);
     };
     init();
-  }, []);
+  }, [navigate, fetchVolunteers, fetchStats]);
 
-  const fetchVolunteers = async () => {
+  const fetchVolunteers = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase.from("volunteers").select("*").order("created_at", { ascending: false });
     if (!error && data) setVolunteers(data as Volunteer[]);
     setLoading(false);
-  };
+  }, []);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     const [vRes, dRes, aRes, cRes, pRes, tRes] = await Promise.all([
       supabase.from("volunteers").select("status"),
       supabase.from("donations").select("status, amount"),
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
       photos: { total: p.length, pending: p.filter(x => x.status === "pending").length },
       tickets: { total: t.length, open: t.filter(x => x.status === "open").length },
     });
-  };
+  }, []);
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(true);

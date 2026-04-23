@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { Json } from "@/integrations/supabase/types";
 
 type Message = {
   role: "user" | "assistant";
@@ -151,7 +152,7 @@ const LiveChatWidget = () => {
         name: escalationName.trim() || null,
         phone: escalationPhone.trim(),
         concern: concern.slice(0, 2000),
-        chat_history: messages as any,
+        chat_history: messages as unknown as Json,
       });
 
       if (error) throw error;
