@@ -1,6 +1,7 @@
 import MobileNav from "@/components/MobileNav";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
+import LaunchEventSection from "@/components/LaunchEventSection";
 
 import TeamSection from "@/components/TeamSection";
 import ProjectsSection from "@/components/ProjectsSection";
