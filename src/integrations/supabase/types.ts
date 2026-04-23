@@ -116,6 +116,45 @@ export type Database = {
         }
         Relationships: []
       }
+      event_tickets: {
+        Row: {
+          buyer_name: string
+          created_at: string
+          email: string | null
+          id: string
+          mpesa_code: string
+          phone: string
+          quantity: number
+          status: string
+          ticket_type: string
+          total_amount: number
+        }
+        Insert: {
+          buyer_name: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          mpesa_code: string
+          phone: string
+          quantity?: number
+          status?: string
+          ticket_type: string
+          total_amount: number
+        }
+        Update: {
+          buyer_name?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          mpesa_code?: string
+          phone?: string
+          quantity?: number
+          status?: string
+          ticket_type?: string
+          total_amount?: number
+        }
+        Relationships: []
+      }
       photo_uploads: {
         Row: {
           caption: string | null
