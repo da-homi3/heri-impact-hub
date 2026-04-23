@@ -16,6 +16,7 @@ import AdminForgotPassword from "./pages/AdminForgotPassword";
 import AdminResetPassword from "./pages/AdminResetPassword";
 import AdminDashboard from "./pages/AdminDashboard";
 import PochiDonation from "./pages/PochiDonation";
+import ArcadeConsole from "./pages/ArcadeConsole";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
           <Route path="/admin/reset-password" element={<AdminResetPassword />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/arcade/console" element={<ArcadeConsole />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
