@@ -51,6 +51,12 @@
     --pink-glow: 350 100% 85%;
     --warm-gold: 35 85% 55%;
     --trust-green: 145 55% 42%;
+
+    /* 3D depth tokens */
+    --shadow-depth-sm: 0 2px 4px -1px hsl(25 30% 20% / 0.08), 0 4px 12px -2px hsl(25 30% 20% / 0.06);
+    --shadow-depth: 0 4px 8px -2px hsl(25 30% 20% / 0.10), 0 12px 28px -6px hsl(350 70% 35% / 0.12);
+    --shadow-depth-lg: 0 10px 20px -6px hsl(25 30% 20% / 0.14), 0 30px 60px -12px hsl(350 70% 35% / 0.20);
+    --shadow-glow: 0 0 0 1px hsl(350 70% 35% / 0.10), 0 8px 24px -4px hsl(350 70% 35% / 0.25);
   }
 
   .dark {
@@ -106,6 +112,52 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* 3D depth + tilt utilities */
+  .perspective-1000 { perspective: 1000px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .shadow-depth-sm { box-shadow: var(--shadow-depth-sm); }
+  .shadow-depth { box-shadow: var(--shadow-depth); }
+  .shadow-depth-lg { box-shadow: var(--shadow-depth-lg); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+    will-change: transform;
+  }
+  .tilt-card:hover {
+    transform: perspective(1000px) rotateX(4deg) rotateY(-6deg) translateZ(8px);
+    box-shadow: var(--shadow-depth-lg);
+  }
+
+  .lift-on-hover {
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+  }
+  .lift-on-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-depth-lg);
+  }
+
+  .float-slow { animation: float-slow 6s ease-in-out infinite; }
+  .float-slower { animation: float-slow 9s ease-in-out infinite; }
+
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(2deg); }
+  }
+
+  .glass {
+    background: hsl(var(--card) / 0.65);
+    backdrop-filter: blur(12px) saturate(1.1);
+    -webkit-backdrop-filter: blur(12px) saturate(1.1);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tilt-card, .lift-on-hover, .float-slow, .float-slower { transition: none; animation: none; }
+    .tilt-card:hover, .lift-on-hover:hover { transform: none; }
   }
 }
 
