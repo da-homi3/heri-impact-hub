@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Heart, ShoppingBag, Users, MessageCircle, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const MobileNav = () => {
   const [open, setOpen] = useState(false);
@@ -30,13 +31,16 @@ const MobileNav = () => {
             <Heart className="w-6 h-6 text-primary" fill="currentColor" />
             <span className="font-bold text-foreground text-lg">Herizon</span>
           </button>
-          <button
-            onClick={() => setOpen(!open)}
-            className="p-2 text-foreground hover:text-primary transition-colors"
-            aria-label={open ? "Close menu" : "Open menu"}
-          >
-            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setOpen(!open)}
+              className="p-2 text-foreground hover:text-primary transition-colors"
+              aria-label={open ? "Close menu" : "Open menu"}
+            >
+              {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         <AnimatePresence>
