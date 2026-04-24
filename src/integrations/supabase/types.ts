@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      arcade_budget_items: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          label: string
+          notes: string | null
+          per_unit_cost: number
+          phase: string
+          sort_order: number
+          total_cost: number
+          units: number
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          label: string
+          notes?: string | null
+          per_unit_cost?: number
+          phase: string
+          sort_order?: number
+          total_cost?: number
+          units?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          label?: string
+          notes?: string | null
+          per_unit_cost?: number
+          phase?: string
+          sort_order?: number
+          total_cost?: number
+          units?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      arcade_operating_costs: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          id: string
+          label: string
+          monthly_cost: number
+          notes: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          id?: string
+          label: string
+          monthly_cost?: number
+          notes?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          id?: string
+          label?: string
+          monthly_cost?: number
+          notes?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       arcade_sessions: {
         Row: {
           activated_at: string | null
@@ -62,6 +140,193 @@ export type Database = {
           phone?: string
           player_name?: string
           status?: string
+        }
+        Relationships: []
+      }
+      arcade_station_pings: {
+        Row: {
+          active_session_id: string | null
+          cpu_temp: number | null
+          created_at: string
+          id: string
+          metadata: Json | null
+          station_code: string | null
+          station_id: string | null
+          uptime_seconds: number | null
+        }
+        Insert: {
+          active_session_id?: string | null
+          cpu_temp?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          station_code?: string | null
+          station_id?: string | null
+          uptime_seconds?: number | null
+        }
+        Update: {
+          active_session_id?: string | null
+          cpu_temp?: number | null
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          station_code?: string | null
+          station_id?: string | null
+          uptime_seconds?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "arcade_station_pings_station_id_fkey"
+            columns: ["station_id"]
+            isOneToOne: false
+            referencedRelation: "arcade_stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      arcade_stations: {
+        Row: {
+          camera_id: string | null
+          console_id: string | null
+          created_at: string
+          id: string
+          installed_at: string | null
+          ip_address: string | null
+          last_heartbeat_at: string | null
+          location: string
+          name: string
+          notes: string | null
+          station_code: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          camera_id?: string | null
+          console_id?: string | null
+          created_at?: string
+          id?: string
+          installed_at?: string | null
+          ip_address?: string | null
+          last_heartbeat_at?: string | null
+          location: string
+          name: string
+          notes?: string | null
+          station_code: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          camera_id?: string | null
+          console_id?: string | null
+          created_at?: string
+          id?: string
+          installed_at?: string | null
+          ip_address?: string | null
+          last_heartbeat_at?: string | null
+          location?: string
+          name?: string
+          notes?: string | null
+          station_code?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      arcade_tamper_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          notes: string | null
+          payload: Json
+          resolved: boolean
+          resolved_at: string | null
+          resolved_by: string | null
+          severity: string
+          snapshot_url: string | null
+          station_code: string | null
+          station_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          notes?: string | null
+          payload?: Json
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          snapshot_url?: string | null
+          station_code?: string | null
+          station_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          notes?: string | null
+          payload?: Json
+          resolved?: boolean
+          resolved_at?: string | null
+          resolved_by?: string | null
+          severity?: string
+          snapshot_url?: string | null
+          station_code?: string | null
+          station_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "arcade_tamper_events_station_id_fkey"
+            columns: ["station_id"]
+            isOneToOne: false
+            referencedRelation: "arcade_stations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      arcade_workforce_roles: {
+        Row: {
+          created_at: string
+          hourly_rate: number
+          hours: number
+          id: string
+          payment_schedule: string | null
+          payment_type: string
+          phase: string
+          role_name: string
+          sort_order: number
+          task_description: string | null
+          total_cost: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          hourly_rate?: number
+          hours?: number
+          id?: string
+          payment_schedule?: string | null
+          payment_type?: string
+          phase: string
+          role_name: string
+          sort_order?: number
+          task_description?: string | null
+          total_cost?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          hourly_rate?: number
+          hours?: number
+          id?: string
+          payment_schedule?: string | null
+          payment_type?: string
+          phase?: string
+          role_name?: string
+          sort_order?: number
+          task_description?: string | null
+          total_cost?: number
+          updated_at?: string
         }
         Relationships: []
       }
