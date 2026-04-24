@@ -21,10 +21,10 @@ interface GameOption {
 }
 
 const GAME_OPTIONS: GameOption[] = [
-  { id: "quick",      name: "Quick Play",        price: 50,  durationMinutes: 30,  duration: "30 minutes",   emoji: "⚡", description: "Jump in for a quick session. The code activates the moment you scan it on the console." },
-  { id: "standard",   name: "Standard Session",  price: 100, durationMinutes: 60,  duration: "1 hour",       emoji: "🎮", description: "A full hour of play across any available system." },
-  { id: "marathon",   name: "Marathon Mode",     price: 200, durationMinutes: 180, duration: "3 hours",      emoji: "🔥", description: "Extended play for serious gamers. Best value per hour." },
-  { id: "tournament", name: "Tournament Entry",  price: 150, durationMinutes: 120, duration: "Up to 2 hours", emoji: "🏆", description: "Enter a HeriArcade tournament and compete for prizes." },
+  { id: "quick",      name: "Quick Play",        price: 100, durationMinutes: 30,  duration: "30 minutes",   emoji: "⚡", description: "Jump in for a half-hour PS5 session. Your code activates the moment you scan it on the console." },
+  { id: "standard",   name: "Standard Session",  price: 200, durationMinutes: 60,  duration: "1 hour",       emoji: "🎮", description: "A full hour of PS5 play. Standard rate at KSh 200/hr." },
+  { id: "marathon",   name: "Marathon Mode",     price: 550, durationMinutes: 180, duration: "3 hours",      emoji: "🔥", description: "Three full hours on the PS5 — best value per hour." },
+  { id: "tournament", name: "Tournament Entry",  price: 400, durationMinutes: 120, duration: "Up to 2 hours", emoji: "🏆", description: "Enter a HeriArcade PS5 tournament and compete for prizes." },
 ];
 
 const ARCADE_BANNER =

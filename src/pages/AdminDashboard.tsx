@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import OverviewTab from "@/components/admin/OverviewTab";
 import ArcadeTab from "@/components/admin/ArcadeTab";
+import ArcadeOpsTab from "@/components/admin/ArcadeOpsTab";
 import DonationsTab from "@/components/admin/DonationsTab";
 import ConcernsTab from "@/components/admin/ConcernsTab";
 import PhotosTab from "@/components/admin/PhotosTab";
@@ -194,7 +195,16 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="donations" className="mt-4"><DonationsTab /></TabsContent>
-          <TabsContent value="arcade" className="mt-4"><ArcadeTab /></TabsContent>
+          <TabsContent value="arcade" className="mt-4">
+            <Tabs defaultValue="sessions" className="w-full">
+              <TabsList className="w-full grid grid-cols-2 h-auto p-1 bg-card border border-border mb-4">
+                <TabsTrigger value="sessions" className="text-xs py-2">Sessions & payments</TabsTrigger>
+                <TabsTrigger value="ops" className="text-xs py-2">Kiosk ops & budget</TabsTrigger>
+              </TabsList>
+              <TabsContent value="sessions"><ArcadeTab /></TabsContent>
+              <TabsContent value="ops"><ArcadeOpsTab /></TabsContent>
+            </Tabs>
+          </TabsContent>
           <TabsContent value="concerns" className="mt-4"><ConcernsTab /></TabsContent>
           <TabsContent value="photos" className="mt-4"><PhotosTab /></TabsContent>
           <TabsContent value="tickets" className="mt-4"><TicketsTab /></TabsContent>
