@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+// Using Deno.serve instead of the legacy std/http/server.ts import for better compatibility
 
 const SYSTEM_PROMPT = `You are Herizon Support Assistant, a warm, friendly AI helper for Herizon Impact — a humanitarian organisation based in Kenya that helps communities through donations, volunteering, and direct support.
 
@@ -34,7 +34,7 @@ function getCorsHeaders(req: Request) {
   };
 }
 
-serve(async (req) => {
+Deno.serve(async (req: Request) => {
   const corsHeaders = getCorsHeaders(req);
 
   if (req.method === "OPTIONS") {
@@ -83,7 +83,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "google/gemini-1.5-flash",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           ...messages.slice(-20),

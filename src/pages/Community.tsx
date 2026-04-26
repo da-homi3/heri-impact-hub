@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft, Heart, Users, Camera, MessageSquare, Send, Image,
-  LogOut, MapPin, ThumbsUp, Lightbulb, Loader2, Trash2
+  LogOut, MapPin, ThumbsUp, Lightbulb, Loader2, Trash2, X
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { User } from "@supabase/supabase-js";
@@ -56,6 +59,70 @@ const Community = () => {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [volunteerName, setVolunteerName] = useState("");
 
+  const loadData = useCallback(async (userId: string) => {
+    // Load posts
+    const { data: postsData } = await supabase
+      .from("community_posts")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+    setPosts((postsData as Post[]) || []);
+
+    // Load suggestions
+    const { data: suggestionsData } = await supabase
+      .from("community_suggestions")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(50);
+    setSuggestions((suggestionsData as Suggestion[]) || []);
+
+    // Load user's likes
+    const { data: likesData } = await supabase
+      .from("post_likes")
+      .select("post_id")
+      .eq("user_id", userId);
+    if (likesData) setLikedPosts(new Set(likesData.map((l: { post_id: string }) => l.post_id)));
+
+    // Load team info
+    const { data: memberData } = await supabase
+      .from("team_members")
+      .select("team_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (memberData?.team_id) {
+      const { data: team } = await supabase
+        .from("volunteer_teams")
+        .select("name")
+        .eq("id", memberData.team_id)
+        .single();
+      if (team) setTeamName(team.name);
+
+      const { data: members } = await supabase
+        .from("team_members")
+        .select("volunteer_id")
+        .eq("team_id", memberData.team_id);
+
+      if (members && members.length > 0) {
+        const volunteerIds = members.map((m: { volunteer_id: string }) => m.volunteer_id);
+        const { data: volunteers } = await supabase
+          .from("volunteers")
+          .select("id, full_name, location, skills")
+          .in("id", volunteerIds);
+        setTeamMembers((volunteers as TeamMember[]) || []);
+      }
+    }
+
+    // Get volunteer name
+    const { data: vol } = await supabase
+      .from("volunteers")
+      .select("full_name")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (vol) setVolunteerName(vol.full_name);
+    else setVolunteerName(user?.user_metadata?.full_name || "Volunteer");
+  }, [user?.user_metadata?.full_name]);
+
   useEffect(() => {
     const init = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -76,78 +143,6 @@ const Community = () => {
     init();
     return () => subscription.unsubscribe();
   }, [navigate, loadData]);
-
-  const loadData = useCallback(async (userId: string) => {
-    // Load posts
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: postsData } = await (supabase as any)
-      .from("community_posts")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
-    setPosts((postsData as Post[]) || []);
-
-    // Load suggestions
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: suggestionsData } = await (supabase as any)
-      .from("community_suggestions")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(50);
-    setSuggestions((suggestionsData as Suggestion[]) || []);
-
-    // Load user's likes
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: likesData } = await (supabase as any)
-      .from("post_likes")
-      .select("post_id")
-      .eq("user_id", userId);
-    if (likesData) setLikedPosts(new Set(likesData.map((l: { post_id: string }) => l.post_id)));
-
-    // Load team info
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: memberData } = await (supabase as any)
-      .from("team_members")
-      .select("team_id")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (memberData?.team_id) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: team } = await (supabase as any)
-        .from("volunteer_teams")
-        .select("name")
-        .eq("id", memberData.team_id)
-        .single();
-      if (team) setTeamName(team.name);
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: members } = await (supabase as any)
-        .from("team_members")
-        .select("volunteer_id")
-        .eq("team_id", memberData.team_id);
-
-      if (members && members.length > 0) {
-        const volunteerIds = members.map((m: { volunteer_id: string }) => m.volunteer_id);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const { data: volunteers } = await (supabase as any)
-          .from("volunteers")
-          .select("id, full_name, location, skills")
-          .in("id", volunteerIds);
-        setTeamMembers((volunteers as TeamMember[]) || []);
-      }
-    }
-
-    // Get volunteer name
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: vol } = await (supabase as any)
-      .from("volunteers")
-      .select("full_name")
-      .eq("user_id", userId)
-      .maybeSingle();
-    if (vol) setVolunteerName(vol.full_name);
-    else setVolunteerName(user?.user_metadata?.full_name || "Volunteer");
-  }, [user?.user_metadata?.full_name]);
 
   // Realtime subscriptions
   useEffect(() => {
@@ -191,16 +186,16 @@ const Community = () => {
         .from("community-photos")
         .upload(path, imageFile);
       if (!uploadError) {
-        const { data: signedData } = await supabase.storage
-          .from("community-photos")
-          .createSignedUrl(path, 3600);
-        imageUrl = signedData?.signedUrl ?? null;
+      const { data: publicData } = supabase.storage
+        .from("community-photos")
+        .getPublicUrl(path);
+      imageUrl = publicData.publicUrl;
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase as any).from("community_posts").insert({
+    const { error } = await supabase.from("community_posts").insert({
       user_id: user.id,
+      volunteer_name: volunteerName || "Anonymous",
       content: newPost.trim() || "📸 Mission photo",
       image_url: imageUrl,
       location: postLocation.trim() || null,
@@ -220,13 +215,11 @@ const Community = () => {
 
   const handleLike = async (postId: string) => {
     if (likedPosts.has(postId)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase as any).from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
+      await supabase.from("post_likes").delete().eq("post_id", postId).eq("user_id", user.id);
       setLikedPosts((prev) => { const n = new Set(prev); n.delete(postId); return n; });
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: Math.max(0, p.likes_count - 1) } : p));
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (supabase as any).from("post_likes").insert({ post_id: postId, user_id: user.id });
+      await supabase.from("post_likes").insert({ post_id: postId, user_id: user.id });
       setLikedPosts((prev) => new Set(prev).add(postId));
       setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, likes_count: p.likes_count + 1 } : p));
     }
@@ -235,8 +228,7 @@ const Community = () => {
   const handleSubmitSuggestion = async () => {
     if (!newSuggestion.trim()) return;
     setSubmitting(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (supabase as any).from("community_suggestions").insert({
+    const { error } = await supabase.from("community_suggestions").insert({
       user_id: user.id,
       volunteer_name: volunteerName || "Anonymous",
       suggestion: newSuggestion.trim(),
@@ -318,23 +310,111 @@ const Community = () => {
           </TabsList>
 
           <TabsContent value="feed" className="space-y-5">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-gradient-to-br from-secondary via-card to-secondary/50 border border-border/50 rounded-2xl p-10 text-center"
-            >
-              <div className="text-5xl mb-4">🍬😊✨</div>
-              <h3 className="text-2xl font-bold font-display text-foreground mb-3">
-                Sweets, Smiles & Everything Nice
-              </h3>
-              <p className="text-muted-foreground text-sm max-w-xs mx-auto mb-4">
-                Our volunteer feed is coming soon! Get ready to share mission photos, updates and celebrate the amazing work our community does.
-              </p>
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-semibold px-4 py-2 rounded-full">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                Coming soon
+            {/* Create Post */}
+            <div className="bg-card border border-border/50 rounded-xl p-4 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="text-primary font-bold text-sm">{volunteerName[0]}</span>
+                </div>
+                <Textarea
+                  value={newPost}
+                  onChange={(e) => setNewPost(e.target.value)}
+                  placeholder="Share a mission update or photo..."
+                  className="min-h-[80px] text-sm resize-none bg-secondary/30"
+                  maxLength={500}
+                />
               </div>
-            </motion.div>
+              
+              {imagePreview && (
+                <div className="relative rounded-xl overflow-hidden aspect-video group">
+                  <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  <button 
+                    onClick={() => { setImageFile(null); setImagePreview(null); }}
+                    className="absolute top-2 right-2 bg-foreground/50 hover:bg-foreground/70 text-white p-1 rounded-full backdrop-blur-sm transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex gap-2">
+                  <Label htmlFor="image-upload" className="cursor-pointer">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary/50 text-secondary-foreground hover:bg-secondary transition-colors text-xs font-semibold">
+                      <Image className="w-3.5 h-3.5" /> Photo
+                    </div>
+                    <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
+                  </Label>
+                  <div className="relative flex-1 min-w-[120px]">
+                    <MapPin className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                    <Input 
+                      value={postLocation} 
+                      onChange={(e) => setPostLocation(e.target.value)} 
+                      placeholder="Location" 
+                      className="pl-7 h-8 text-[11px] bg-secondary/30" 
+                    />
+                  </div>
+                </div>
+                <Button size="sm" onClick={handleCreatePost} disabled={submitting || (!newPost.trim() && !imageFile)} className="px-4">
+                  {submitting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <><Send className="w-3.5 h-3.5 mr-1.5" /> Post</>}
+                </Button>
+              </div>
+            </div>
+
+            {/* Post Feed */}
+            {posts.length > 0 ? (
+              <div className="space-y-4">
+                {posts.map((post) => (
+                  <motion.div
+                    key={post.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-card border border-border/50 rounded-xl overflow-hidden shadow-depth-sm"
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                            <span className="text-primary font-bold text-xs">{post.volunteer_name?.[0] || "V"}</span>
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-foreground">{post.volunteer_name || "Volunteer"}</p>
+                            {post.location && (
+                              <p className="text-[10px] text-muted-foreground flex items-center gap-0.5">
+                                <MapPin className="w-2.5 h-2.5" /> {post.location}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <span className="text-[10px] text-muted-foreground">{timeAgo(post.created_at)}</span>
+                      </div>
+                      <p className="text-sm text-foreground mb-3 leading-relaxed">{post.content}</p>
+                    </div>
+                    
+                    {post.image_url && (
+                      <div className="aspect-video w-full bg-muted overflow-hidden">
+                        <img src={post.image_url} alt="Mission photo" className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                    )}
+
+                    <div className="px-4 py-3 border-t border-border/30 flex items-center gap-4">
+                      <button 
+                        onClick={() => handleLike(post.id)}
+                        className={`flex items-center gap-1.5 transition-colors ${likedPosts.has(post.id) ? "text-primary" : "text-muted-foreground hover:text-primary"}`}
+                      >
+                        <ThumbsUp className={`w-4 h-4 ${likedPosts.has(post.id) ? "fill-current" : ""}`} />
+                        <span className="text-xs font-semibold">{post.likes_count}</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-secondary/20 rounded-2xl border border-dashed border-border">
+                <Camera className="w-10 h-10 text-muted-foreground/30 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No posts yet. Be the first to share!</p>
+              </div>
+            )}
           </TabsContent>
 
           {/* TEAM TAB */}

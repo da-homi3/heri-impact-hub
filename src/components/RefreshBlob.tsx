@@ -8,6 +8,7 @@ const RefreshBlob = () => {
   const [pullProgress, setPullProgress] = useState(0);
   const touchStartY = useRef(0);
   const isPulling = useRef(false);
+  const pullProgressRef = useRef(0);
 
   const showBlob = useCallback(() => setVisible(true), []);
 
@@ -30,13 +31,15 @@ const RefreshBlob = () => {
       if (!isPulling.current) return;
       const dy = e.touches[0].clientY - touchStartY.current;
       if (dy > 0) {
-        setPullProgress(Math.min(dy / PULL_THRESHOLD, 1));
+        const progress = Math.min(dy / PULL_THRESHOLD, 1);
+        pullProgressRef.current = progress;
+        setPullProgress(progress);
         if (dy > 10) e.preventDefault();
       }
     };
-
+    
     const handleTouchEnd = () => {
-      if (isPulling.current && pullProgress >= 1) {
+      if (isPulling.current && pullProgressRef.current >= 1) {
         // Gentle haptic feedback when threshold is reached
         if (navigator.vibrate) {
           navigator.vibrate(30);
@@ -44,6 +47,7 @@ const RefreshBlob = () => {
         showBlob();
       }
       isPulling.current = false;
+      pullProgressRef.current = 0;
       setPullProgress(0);
     };
 
@@ -57,7 +61,7 @@ const RefreshBlob = () => {
       window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [pullProgress, showBlob]);
+  }, [showBlob]);
 
   const handleStay = () => setVisible(false);
   const handleRefresh = () => window.location.reload();

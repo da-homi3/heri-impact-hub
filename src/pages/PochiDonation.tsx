@@ -142,7 +142,7 @@ const PochiDonation = () => {
       <header className="sticky top-0 z-50 bg-card/90 backdrop-blur-md border-b border-border/50 shadow-sm">
         <div className="container flex items-center h-14 px-4 gap-3">
           <button
-            onClick={() => (activeView === "donate" && step > 0 ? handleBack() : navigate("/donate"))}
+            onClick={() => (activeView === "donate" ? handleBack() : navigate("/donate"))}
             className="p-2 -ml-2 text-foreground hover:text-primary transition-colors"
             aria-label="Go back"
           >

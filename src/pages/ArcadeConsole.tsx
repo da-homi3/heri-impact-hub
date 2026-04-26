@@ -41,7 +41,6 @@ const ArcadeConsole = () => {
   // Local countdown
   useEffect(() => {
     if (session && (session.status === "active" || session.status === "activated")) {
-      setSecondsLeft(session.seconds_remaining);
       tickRef.current = window.setInterval(() => {
         setSecondsLeft((s) => {
           if (s <= 1) {
@@ -62,6 +61,13 @@ const ArcadeConsole = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.status]);
+
+  // Sync local timer with server state when session is updated (e.g. via heartbeat)
+  useEffect(() => {
+    if (session && "seconds_remaining" in session) {
+      setSecondsLeft(session.seconds_remaining);
+    }
+  }, [session]);
 
   const redeem = async (rawCode: string, silent = false) => {
     const trimmed = rawCode.trim().toUpperCase();

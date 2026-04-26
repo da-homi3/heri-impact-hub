@@ -53,18 +53,6 @@ const AdminDashboard = () => {
     tickets: { total: 0, open: 0 },
   });
 
-  useEffect(() => {
-    const init = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate("/admin/login"); return; }
-      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
-      const isAdmin = roles?.some((r: { role: string }) => r.role === "admin");
-      if (!isAdmin) { navigate("/admin/login"); return; }
-      await Promise.all([fetchVolunteers(), fetchStats()]);
-    };
-    init();
-  }, [navigate, fetchVolunteers, fetchStats]);
-
   const fetchVolunteers = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase.from("volunteers").select("*").order("created_at", { ascending: false });
@@ -96,6 +84,18 @@ const AdminDashboard = () => {
       tickets: { total: t.length, open: t.filter(x => x.status === "open").length },
     });
   }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { navigate("/admin/login"); return; }
+      const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", user.id);
+      const isAdmin = roles?.some((r: { role: string }) => r.role === "admin");
+      if (!isAdmin) { navigate("/admin/login"); return; }
+      await Promise.all([fetchVolunteers(), fetchStats()]);
+    };
+    init();
+  }, [navigate, fetchVolunteers, fetchStats]);
 
   const updateStatus = async (id: string, status: string) => {
     setUpdating(true);

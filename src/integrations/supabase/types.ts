@@ -350,6 +350,129 @@ export type Database = {
         }
         Relationships: []
       }
+      volunteer_teams: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          id: string
+          team_id: string
+          volunteer_id: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          volunteer_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          volunteer_id?: string
+          user_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      community_posts: {
+        Row: {
+          id: string
+          user_id: string
+          volunteer_name: string | null
+          content: string
+          image_url: string | null
+          location: string | null
+          likes_count: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          volunteer_name?: string | null
+          content: string
+          image_url?: string | null
+          location?: string | null
+          likes_count?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          volunteer_name?: string | null
+          content?: string
+          image_url?: string | null
+          location?: string | null
+          likes_count?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      post_likes: {
+        Row: {
+          id: string
+          post_id: string
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          user_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      community_suggestions: {
+        Row: {
+          id: string
+          user_id: string
+          volunteer_name: string
+          suggestion: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          volunteer_name: string
+          suggestion: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          volunteer_name?: string
+          suggestion?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

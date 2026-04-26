@@ -25,8 +25,8 @@ const PhotosTab = () => {
     const { data } = await supabase.from("photo_uploads").select("*").order("created_at", { ascending: false });
     if (data) {
       const withUrls = await Promise.all((data as Photo[]).map(async (p) => {
-        const { data: signed } = await supabase.storage.from("community-photos").createSignedUrl(p.storage_path, 3600);
-        return { ...p, url: signed?.signedUrl ?? null };
+        const { data: publicData } = supabase.storage.from("community-photos").getPublicUrl(p.storage_path);
+        return { ...p, url: publicData.publicUrl };
       }));
       setRows(withUrls);
     }
