@@ -2,3 +2,9 @@ project_id = "prkazhzidghtwegeqhub"
 
 [functions.support-chat]
 verify_jwt = false
+
+[functions.kiosk-heartbeat]
+verify_jwt = false
+
+[functions.kiosk-tamper-alert]
+verify_jwt = false
