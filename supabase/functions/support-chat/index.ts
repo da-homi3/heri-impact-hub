@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Using Deno.serve instead of the legacy std/http/server.ts import for better compatibility
 
 const SYSTEM_PROMPT = `You are Herizon Support Assistant, a warm, friendly AI helper for Herizon Impact — a humanitarian organisation based in Kenya that helps communities through donations, volunteering, and direct support.

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
@@ -48,7 +49,7 @@ Deno.serve(async (req: Request) => {
 
     // Try to sign in first
     const { data: signInData, error: signInError } = await supabaseAdmin.auth.admin.listUsers();
-    const existingUser = signInData?.users?.find((u) => u.email === authEmail);
+    const existingUser = signInData?.users?.find((u: any) => u.email === authEmail);
 
     let userId: string;
 

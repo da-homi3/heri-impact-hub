@@ -7,8 +7,8 @@ const STORAGE_KEY = "herizon-theme";
 export const applyStoredTheme = () => {
   if (typeof window === "undefined") return;
   const stored = localStorage.getItem(STORAGE_KEY);
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const isDark = stored ? stored === "dark" : prefersDark;
+  // Default to light (false) if no stored preference exists
+  const isDark = stored ? stored === "dark" : false;
   document.documentElement.classList.toggle("dark", isDark);
 };
 

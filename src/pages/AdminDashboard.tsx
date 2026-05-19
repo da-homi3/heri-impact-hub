@@ -14,6 +14,7 @@ import DonationsTab from "@/components/admin/DonationsTab";
 import ConcernsTab from "@/components/admin/ConcernsTab";
 import PhotosTab from "@/components/admin/PhotosTab";
 import TicketsTab from "@/components/admin/TicketsTab";
+import EventTicketsTab from "@/components/admin/EventTicketsTab";
 
 type Volunteer = {
   id: string;
@@ -45,6 +46,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Volunteer | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
   const [stats, setStats] = useState({
     volunteers: { total: 0, pending: 0, approved: 0 },
     donations: { total: 0, sum: 0 },
@@ -94,6 +96,12 @@ const AdminDashboard = () => {
       const isAdmin = roles?.some((r: { role: string }) => r.role === "admin");
       if (!isAdmin) { navigate("/admin/login"); return; }
       await Promise.all([fetchVolunteers(), fetchStats()]);
+
+      // Handle verification param from scanned QR code URL
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("verify")) {
+        setActiveTab("eventTickets");
+      }
     };
     init();
   }, [navigate, fetchVolunteers, fetchStats]);
@@ -143,15 +151,16 @@ const AdminDashboard = () => {
       </header>
 
       <main className="container max-w-4xl mx-auto px-4 py-6">
-        <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="w-full grid grid-cols-7 h-auto p-1 bg-card border border-border">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="w-full grid grid-cols-4 md:grid-cols-8 h-auto p-1 bg-card border border-border">
             <TabsTrigger value="overview" className="flex flex-col gap-0.5 py-2 text-[10px]"><LayoutDashboard className="w-4 h-4" />Overview</TabsTrigger>
             <TabsTrigger value="volunteers" className="flex flex-col gap-0.5 py-2 text-[10px]"><Users className="w-4 h-4" />Volunteers</TabsTrigger>
             <TabsTrigger value="donations" className="flex flex-col gap-0.5 py-2 text-[10px]"><Heart className="w-4 h-4" />Donations</TabsTrigger>
             <TabsTrigger value="arcade" className="flex flex-col gap-0.5 py-2 text-[10px]"><Gamepad2 className="w-4 h-4" />Arcade</TabsTrigger>
             <TabsTrigger value="concerns" className="flex flex-col gap-0.5 py-2 text-[10px]"><MessageSquare className="w-4 h-4" />Concerns</TabsTrigger>
             <TabsTrigger value="photos" className="flex flex-col gap-0.5 py-2 text-[10px]"><ImageIcon className="w-4 h-4" />Photos</TabsTrigger>
-            <TabsTrigger value="tickets" className="flex flex-col gap-0.5 py-2 text-[10px]"><Ticket className="w-4 h-4" />Tickets</TabsTrigger>
+            <TabsTrigger value="eventTickets" className="flex flex-col gap-0.5 py-2 text-[10px]"><Ticket className="w-4 h-4" />Event tickets</TabsTrigger>
+            <TabsTrigger value="tickets" className="flex flex-col gap-0.5 py-2 text-[10px]"><MessageSquare className="w-4 h-4" />Support</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-4"><OverviewTab stats={stats} /></TabsContent>
@@ -207,6 +216,7 @@ const AdminDashboard = () => {
           </TabsContent>
           <TabsContent value="concerns" className="mt-4"><ConcernsTab /></TabsContent>
           <TabsContent value="photos" className="mt-4"><PhotosTab /></TabsContent>
+          <TabsContent value="eventTickets" className="mt-4"><EventTicketsTab /></TabsContent>
           <TabsContent value="tickets" className="mt-4"><TicketsTab /></TabsContent>
         </Tabs>
       </main>
