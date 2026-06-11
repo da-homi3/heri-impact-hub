@@ -330,6 +330,63 @@ export type Database = {
         }
         Relationships: []
       }
+      community_posts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          likes_count: number
+          location: string | null
+          user_id: string
+          volunteer_name: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes_count?: number
+          location?: string | null
+          user_id: string
+          volunteer_name: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          likes_count?: number
+          location?: string | null
+          user_id?: string
+          volunteer_name?: string
+        }
+        Relationships: []
+      }
+      community_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          suggestion: string
+          user_id: string
+          volunteer_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          suggestion: string
+          user_id: string
+          volunteer_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          suggestion?: string
+          user_id?: string
+          volunteer_name?: string
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount: number
@@ -468,6 +525,35 @@ export type Database = {
         }
         Relationships: []
       }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -497,6 +583,45 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          id: string
+          team_id: string
+          user_id: string | null
+          volunteer_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          team_id: string
+          user_id?: string | null
+          volunteer_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          team_id?: string
+          user_id?: string | null
+          volunteer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_members_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "volunteer_teams"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_members_volunteer_id_fkey"
+            columns: ["volunteer_id"]
+            isOneToOne: false
+            referencedRelation: "volunteers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tickets: {
         Row: {
@@ -558,6 +683,27 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_teams: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          name?: string
         }
         Relationships: []
       }
