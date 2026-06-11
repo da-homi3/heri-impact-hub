@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RefreshBlob from "@/components/RefreshBlob";
+import AfricanPatternBackground from "@/components/AfricanPatternBackground";
 import Index from "./pages/Index";
 import Donate from "./pages/Donate";
 import Shop from "./pages/Shop";
@@ -26,6 +27,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AfricanPatternBackground />
       <RefreshBlob />
       <BrowserRouter>
         <Routes>
